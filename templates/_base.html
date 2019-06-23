@@ -20,6 +20,20 @@
         <a href="{% url 'blog:post_new' %}">+ New Blog Post</a>
     </div>
 </header>
+{% if user.is_authenticated %}
+    <p>
+        Hi {{ user.username }}!
+        <br>
+        {% comment %} 
+        We could go into the Admin panel and do it manually, But we will add a log out link instead that redirects to the homepage. Thanks to the Django auth system, this is dead-simple to achieve. 
+        {% endcomment %}
+        <a href="{% url 'logout' %}">Log Out</a>
+        {% comment %} That’s all we need to do as the necessary view is provided to us by the Django auth app. {% endcomment %}
+    </p>
+{% else %}
+    <p>You are not logged in.</p>
+    <a href="{% url 'login' %}">Log In</a>
+{% endif %}
 <body>
 {% block content %}
 {% endblock%}
