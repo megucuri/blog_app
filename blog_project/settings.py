@@ -41,12 +41,23 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+
+    # For deployment on Heroku. Must be above 'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
+
+    # Default
     'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
+    # Default
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    # For deployment on Heroku. Must be under 'SessionMiddleware'
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
+    # Default
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -122,8 +133,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+# for static file deployment to Heroku
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# for static file deployment to Heroku
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # Redirct after login
 LOGIN_REDIRECT_URL = 'blog:post_list'
